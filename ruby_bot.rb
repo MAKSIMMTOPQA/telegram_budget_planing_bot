@@ -17,22 +17,11 @@ class Budget
     another_number.to_i
     budget.to_i - another_number.to_i if options[:subtracked]
   end
-
-  def calculate_expences(key, value)
-    @expences = @expences.merge(key => value)
-  end 
-
-  def state_array(value)
-    states = [0,1,2,3,4,5]
-    state = s_array[value]
-  end 
 end 
 
 token = '1443997139:AAGAwCO1Wgd9up7yhZXmIRxNW7zq30RAAFU'
 states = 0
   Telegram::Bot::Client.run(token) do |bot|
-    # b = Budget.new(1)
-    # b.budget
     @b = Budget.new
     @b.expences = Hash.new 
 
@@ -94,8 +83,7 @@ states = 0
           if state == 2
             house_new_budget = message.text.to_i
             @b.budget = @b.calculate(@b.budget.to_i, house_new_budget.to_i, subtracked: true)
-            @b.expences.calculate_expences(house_category, house_new_budget)
-            #@expences = @expences.merge{ house_category => house_new_budget }
+            @expences = @expences.merge{ house_category => house_new_budget }
             bot.api.send_message(chat_id: message.from.id, text: "Your budget is #{@b.budget}")
             bot.api.send_message(chat_id: message.from.id, text: "Click Back to get back for categories", reply_markup: markup_for_back)
             state = 0 
@@ -129,35 +117,6 @@ states = 0
               bot.api.send_message(chat_id: message.from.id, text: "Your expences for month is #{month_expences}")  
             end  
           end 
-      
-
-          #month_expences = expences.inject(0) {|sum, hash| sum + hash[:shopi]} #=> 30
-          #{:amount => month_expences}  
- 
-            # month_expences.each do {|a| a++ } 
-            # end 
-          # month_expences.inject(0) {|sum, num| sum + num}
-          # month_expences.to_s
-          # month_expences.each do |i|
-          # i.sum
-          # month_expences.push(i)
-             
-          
-         #new_array = restaurant_menu.keys
-
-          #month_expences = expence
-          #month_expences.map { |i| i.summ }
-
-         # my_hash = Hash.new
-
-            # my_key = "key000"
-            # my_hash[my_key] = "my_value"
-            # Livedemo: http://ideone.com/yqIx2M
-
-            # Second one (more similar to what you are trying to achieve) is:
-
-            # my_key = "key0"
-            # my_hash = Hash[my_key, "value00"]
         else 
           bot.api.send_message(chat_id: message.chat.id, text: 'Type /start to using bot')
         end 
