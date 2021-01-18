@@ -19,7 +19,7 @@ class Budget
   end
 end 
 
-token = '1443997139:AAGAwCO1Wgd9up7yhZXmIRxNW7zq30RAAFU'
+token = ''
 states = 0
   Telegram::Bot::Client.run(token) do |bot|
     @b = Budget.new
